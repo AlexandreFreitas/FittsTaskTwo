@@ -1,5 +1,6 @@
 FittsTaskTwo
-*.class
+build
+*.sd*
 *.jar
 *.html
 *.jpg

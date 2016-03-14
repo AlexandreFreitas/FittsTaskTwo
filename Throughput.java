@@ -8,28 +8,28 @@ import java.util.StringTokenizer;
 
 /**
  * <h1>Throughput</h1>
- * 
+ *
  * <h3>Summary</h3>
- * 
+ *
  * <ul>
  * <li>Calculate Fitts' throughput for a sequence of trials
  * <p>
- * 
+ *
  * <li>
  * Input data: task conditions, selection coordinates, task completion times
  * <p>
- * 
+ *
  * <li>Two uses:
- * 
+ *
  * <ul>
  * <li>As a class embedded in experiment software
  * <li>As a utility program to process data from a terminal prompt
  * </ul>
  * <p>
  * </ul>
- * 
+ *
  * <h3>Background</h3>
- * 
+ *
  * Throughput is a commonly used as a dependent variable in experimental research on pointing
  * devices or point-select techniques. However, in reviewing research papers where throughput is
  * used, different methods of calculating Throughput are found. Because of this, it is difficult to
@@ -39,31 +39,31 @@ import java.util.StringTokenizer;
  * a tool to do the calculations. Measures related to throughput are also calculated and described,
  * as noted below.
  * <p>
- * 
+ *
  * This is not a primer on Fitts' law or on Fitts' throughput. For background discussions, the
  * reader is directed to the references cited at the end of this API. Let's begin.
  * <p>
- * 
+ *
  * Fitts' throughput is calculated on a sequence of trials. The premise for this is twofold:
  * <p>
- * 
+ *
  * <ol>
  * <li>Throughput cannot be calculated on a single trial.
  * <p>
  * <li>A sequence of trials is the smallest set of user actions for which throughput can be
  * calculated as a measure of performance.
  * </ol>
- * 
+ *
  * (Note: A "sequence" is sometimes called a "block". The test conditions, including <i>A</i> and
  * <i>W</i>, are the same for the entire sequence.)
  * <p>
- * 
+ *
  * On the first point, the calculation of Throughput includes the variability in selection
  * coordinates. The variability is analogous to "noise" in the information-theoretic metaphor upon
  * which Fitts' law is based. Thus, multiple selections are required and from the coordinates of
  * selection, the variability in the coordinates is computed.
  * <p>
- * 
+ *
  * The second point is mostly of ecological concern. After performing a single sequence of trials,
  * the user pauses, rests, stretches, adjusts the apparatus, has a sip of tea, adjusts her position
  * on a chair, or something. There is a demarcation between sequences and for no particular purpose
@@ -72,84 +72,84 @@ import java.util.StringTokenizer;
  * observed and measured and the next sequence should be treated as a separate unit of action with
  * separate performance measurements.
  * <p>
- * 
+ *
  * Related to the second point is the following: Throughput should not be calculated on larger sets
  * of raw data. For example, if six participants each perform five sequences of trials under the
  * same conditions, there are 6 &times; 5 &equals; 30 calculations of throughput, rather than a
  * single calculation using the pooled data.
  * <p>
- * 
+ *
  * The <code>Throughput</code> code may be used in two ways: (i) as a class embedded in
  * custom-designed software or (ii) as a utility program executed from a command prompt.
  * <p>
- * 
+ *
  * <!----------------------------------------------------------------------------------------->
  * <b>Throughput Class</b>
  * <p>
- * 
+ *
  * As a class embedded in custom-designed software, the <code>Throughput</code> class file is placed
  * in the same directory as other class files for the application. This API provides all the details
  * necessary to use the <code>Throughput</code> class.
  * <p>
- * 
+ *
  * Use of this class begins with the instantiation of a <code>Throughput</code> object. The
  * constructor receives the data necessary to characterise the sequence. The data consist of a
  * String, two doubles, four arrays, and two integers. The arrays are all of the same size, with the
  * size equal to the number of trials in the sequence. The data, or arguments, passed to the
  * constructor are as follows:
  * <p>
- * 
+ *
  * <table border=1 cellspacing=0 width=80% align=center cellpadding=5>
- * 
+ *
  * <tr bgcolor=#cccccc>
  * <th>Argument
  * <th>Type
  * <th>Description
- * 
+ *
  * <tr>
  * <td><code>code</code>
  * <td><code>String
  * <td>A code to represent the conditions used for testing.
  * This argument is used to associate test conditions (participant code, block code, device code,
  * etc.) with the sequence. A null string may be passed if no code is necessary.
- * 
+ *
  * <tr>
  * <td><code>amplitude</code>
  * <td><code>double
  * <td>Target amplitude for the sequence
- * 
+ *
  * <tr>
  * <td><code>width</code>
  * <td><code>double
  * <td>Target width for the sequence
- * 
+ *
  * <tr>
  * <td><code>from</code>
  * <td><code>Point2D.Double[]
  * <td>The specified starting coordinates for each trial (center of the "from" target)
- * 
+ *
  * <tr>
  * <td><code>to</code>
  * <td><code>Point2D.Double[]
  * <td>The specified ending coordinates for each trial (center of the "to" target)
- * 
+ *
  * <tr>
  * <td><code>select</code>
  * <td><code>Point2D.Double[]
  * <td>The coordinates of selection where each trial was terminated
- * 
+ *
  * <tr>
  * <td><code>mt</code>
  * <td><code>double[]
  * <td>The movement times (ms) for each trial
- * 
+ *
  * <tr>
  * <td><code>taskType</code>
  * <td><code>int
  * <td>A constant identifying if the task movements were one-dimensional (
  * <code>Throughput.ONE_DIMENSIONAL</code>) or two-dimensional (
  * <code>Throughput.TWO_DIMENSIONAL</code>)
- * 
+ *
  * <tr>
  * <td><code>responseType</code>
  * <td><code>int
@@ -158,7 +158,7 @@ import java.util.StringTokenizer;
  * only used in calculating the effective target amplitude (see below).
  * </table>
  * <p>
- * 
+ *
  * The <code>Throughput</code> class was designed to be "universal" &mdash; as general purpose as
  * possible. It can be used both for serial and discrete tasks and for one-dimensional (1D) or
  * two-dimensional (2D) movement. For serial tasks, each trial immediately follows the preceding
@@ -167,7 +167,7 @@ import java.util.StringTokenizer;
  * and the beginning of movement is called reaction time and is excluded from the movement time
  * recorded for the trial.
  * <p>
- * 
+ *
  * The one-dimensional (1D) case is the traditional back-and-forth task used by Fitts in his
  * original 1954 paper. The two-dimensional case is the task commonly used in accordance with the
  * ISO 9241-9 standard (updated in 2012 as ISO/TC 9241-411). For two-dimensional movements, a series
@@ -176,31 +176,31 @@ import java.util.StringTokenizer;
  * second selection is beside a target previously selected, thus the movements progress around the
  * layout circle until all targets are selected.
  * <p>
- * 
+ *
  * Throughput is calculated for each sequence of trials as
  * <p>
- * 
+ *
  * <blockquote> <i>TP</i> = <i>ID</i><sub>e</sub> / <i>MT</i> </blockquote>
- * 
+ *
  * where
- * 
+ *
  * <blockquote> <i>ID</i><sub>e</sub> = log<sub>2</sub>(<i>A</i><sub>e</sub> / <i>W</i><sub>e</sub>
  * + 1) </blockquote>
- * 
+ *
  * and
- * 
+ *
  * <blockquote> <i>W</i><sub>e</sub> = 4.133 &times; <i>SD</i><sub>x</sub> </blockquote>
- * 
+ *
  * <i>MT</i> is the mean movement time per trial (in seconds). <i>ID</i><sub>e</sub> is the
  * effective index of difficulty (in bits). Throughput (<i>TP</i>) is the rate of information
  * processing (in bits per second).
  * <p>
- * 
+ *
  * The subscript "e" beside <i>ID</i> is for "effective". In the effective form, the index of
  * difficulty reflects the task the participant actually did rather than the task the participant
  * was presented with.
  * <p>
- * 
+ *
  * The effective target width (<i>W</i><sub>e</sub>) is calculated from <i>SD</i><sub>x</sub>, which
  * is the standard deviation in the selection coordinates for the sequence of trials. The selection
  * coordinates are projected onto the task axis to maintain the inherent one-dimensionality of
@@ -208,94 +208,94 @@ import java.util.StringTokenizer;
  * the desired end point ("to"). The projection is done using simple calculations involving the
  * Pythagorean identity. Details are provide below and also in the source code.
  * <p>
- * 
+ *
  * The effective target amplitude, <i>A</i><sub>e</sub>, is the mean of the actual movement
  * amplitudes over a sequence of trials. <i>A</i><sub>e</sub> is measured along the task axis.
  * <p>
- * 
+ *
  * The following figure illustrates the geometry for a single trial, including the point of
  * selection:
  * <p>
- * 
+ *
  * <center> <img src="Throughput-1.jpg" width= 750> </center>
  * <p>
- * 
+ *
  * Although the figure shows a trial with horizontal movement to the right, the calculations are
  * valid for movements in any direction or angle. Circular targets are shown to provide a conceptual
  * visualization of the task. Other target shapes are possible, depending on the setup in the
  * experiment. The calculation begins by computing the length of the sides connecting the
  * <code>from</code>, <code>to</code>, and <code>select</code> points in the figure:
  * <p>
- * 
+ *
  * <blockquote><code>
  * double a = Math.hypot(x1 - x2, y1 - y2);<br>
  * double b = Math.hypot(x - x2, y - y2);<br>
  * double c = Math.hypot(x1 - x, y1 - y);
  * </blockquote></code>
- * 
+ *
  * The <i>x-y</i> coordinates correspond to the <code>from</code>
  * (<i>x</i><sub>1</sub>,&nbsp;<i>y</i><sub>1</sub>), <code>to</code>
  * (<i>x</i><sub>2</sub>,&nbsp;<i>y</i><sub>2</sub>), and <code>select</code>
  * (<i>x</i>,&nbsp;<i>y</i>) points in the figure. Given <code>a</code>, <code>b</code>, and
  * <code>c</code>, as above, <code>dx</code> is then calculated:
  * <p>
- * 
+ *
  * <blockquote><code>
  * double dx = (c * c - b * b - a * a) / (2.0 * a);
  * </blockquote></code>
- * 
+ *
  * Note that <code>dx</code> is 0 for a selection at the center of the target (as projected on the
  * task axis), positive for a selection on the far side of the center, and negative for a selection
  * on the near side.
  * <p>
- * 
+ *
  * The effective target amplitude is simply <code>a + dx</code>. For serial tasks, an additional
  * adjustment for <i>A</i><sub>e</sub> is to add <code>dx</code> from the previous trial (for all
  * trials after the first). This is necessary since each trial begins at the selection point of the
  * previous trial. For discrete tasks, the trial is assumed to begin at the center of the "from"
  * target.
  * <p>
- * 
+ *
  * The use of the effective target amplitude (<i>A</i><sub>e</sub>) has little influence on
  * throughput, provided selections are distributed about the center of the targets. However, it is
- * important to use <i>A</i><sub>e</sub> to prevent ìgaming the system.î For example, if all
- * movements fall short and only traverse, say, æ of <i>A</i>, throughput is artificially inflated
+ * important to use <i>A</i><sub>e</sub> to prevent ‚Äúgaming the system.‚Äù For example, if all
+ * movements fall short and only traverse, say, ¬æ of <i>A</i>, throughput is artificially inflated
  * if calculated using <i>A</i>. Using <i>A</i><sub>e</sub> prevents this. This is part of the
- * overall premise in using ìeffectiveî values: Participants get credit for what they actually did,
+ * overall premise in using ‚Äúeffective‚Äù values: Participants get credit for what they actually did,
  * not for what they were asked to do.
  * <p>
- * 
+ *
  * Once a throughput object is instantiated, throughput and related measures are retrieved using
  * public instance methods. The most relevant methods are as follows:
  * <p>
- * 
+ *
  * <table border=1 cellspacing=0 width=80% align=center cellpadding=5>
- * 
+ *
  * <tr bgcolor=#cccccc>
  * <th>Method
  * <th>Return Type
  * <th>Description
- * 
+ *
  * <tr>
  * <td><code>getThroughput</code>
  * <td><code>double
  * <td>Throughput for the sequences of trials
- * 
+ *
  * <tr>
  * <td><code>getAe</code>
  * <td><code>double
  * <td>Effective target amplitude for the sequence
- * 
+ *
  * <tr>
  * <td><code>getWe</code>
  * <td><code>double
  * <td> Effective target width for the sequence
- * 
+ *
  * <tr>
  * <td><code>getIDe</code>
  * <td><code>double
  * <td> Effective index of difficulty for the sequence
- * 
+ *
  * <tr>
  * <td><code>getX</code>
  * <td><code>double
@@ -304,27 +304,27 @@ import java.util.StringTokenizer;
  * corresponds to selections clustered about the center of the target, while positive or negative
  * values correspond to selections with a mean on the near-side or far-side of the center of the
  * target, respectively.
- * 
+ *
  * <tr>
  * <td><code>getSDx</code>
  * <td><code>double
  * <td> Standard deviation in the selection coordinates, as projected on the task axis
- * 
+ *
  * <tr>
  * <td><code>getDeltaX</code>
  * <td><code>double[]
  * <td>The <i>x</i>-selection coordinates, as projected on the task axis
- * 
+ *
  * <tr>
  * <td><code>getSkewness</code>
  * <td><code>double
  * <td>Skewness in the distribution formed by the selection coordinates
- * 
+ *
  * <tr>
  * <td><code>getKurtosis</code>
  * <td><code>double
  * <td>Kurtosis in the distribution formed by the selection coordinates
- * 
+ *
  * <tr>
  * <td><code>isNormal</code>
  * <td><code>boolean
@@ -333,47 +333,47 @@ import java.util.StringTokenizer;
  * .05). The Lilliefors test is used. If <code>false</code> is returned the null hypothesis is
  * rejected, implying the distribution is not normal. If <code>true</code> is returned the null
  * hypothesis is not rejected, implying the distribution has passed the test for normality.
- * 
+ *
  * </table>
  * <p>
- * 
+ *
  * <!---------------------------------------------------------------------------------------->
  * <b>Throughput Utility Program</b>
  * <p>
- * 
+ *
  * The <code>Throughput</code> class may be executed from a command prompt to process data in a
  * file. The following is the usage message if executed without arguments:
  * <p>
- * 
+ *
  * <pre>
  *      PROMPT>java Throughput
  *      Usage: java Throughput datafile -t|-s
- *      
+ *
  *         where datafile = file containing data
  *               -t = table output
  *               -s = summary output (1 line per sequence)
  * </pre>
- * 
+ *
  * The first task in using <code>Throughput</code> as a utility is to organize the data in a file
  * and in the correct format. The format is simple. As an example, the data for a sequence with 20
  * trials are organized in 25 lines:
  * <p>
- * 
+ *
  * <pre>
  *      Line     Data (comment)
- *      1        Code header (String ñ once only)
- *      2        Code (String ñ once per sequence)
+ *      1        Code header (String ‚Äì once only)
+ *      2        Code (String ‚Äì once per sequence)
  *      3        A, W (2 doubles)
  *      4        Task type, Response type (2 String constants)
  *      5-24     From [x/y], To [x/y], Select [x/y], MT (7 doubles)
  *      25       Blank (next sequence begins on next line)
  * </pre>
- * 
+ *
  * Consider the file <code><a href="example-data.txt">example-data.txt</a></code>, which contains
  * data formatted as above. The <code>Throughput</code> utility processes the data as follows
  * (slightly abbreviated):
  * <p>
- * 
+ *
  * <pre>
  *      PROMPT>java Throughput example-data.txt -t
  *      Code = P07,B05,G03,C03
@@ -404,7 +404,7 @@ import java.util.StringTokenizer;
  *     540.2    592.0    227.8    592.0    215.4     690.5      252
  *     227.8    592.0    540.2    592.0    521.5     641.8      210
  *     ============================================================
- * 
+ *
  *     Number_of_trials = 20
  *     Select(x'): 9.3, -10.7, 32.8, ...
  *     -----
@@ -423,25 +423,25 @@ import java.util.StringTokenizer;
  *     MT = 252.3
  *     Throughput = 8.04
  * </pre>
- * 
- * The <code>ñt</code> option is used to provide output in a tabular format (see above). The first
+ *
+ * The <code>‚Äìt</code> option is used to provide output in a tabular format (see above). The first
  * part of the output simply echoes the input data in human readable form. After that, summary data
  * available through the <code>Throughput</code> class are shown, culminating with the value of
  * throughput (in bits per second).
  * <p>
- * 
+ *
  * As well as the values used in computing throughput, the <code>Throughput</code> utility provides
  * information about the distribution of the selection coordinates, as projected on the task axis.
  * This includes the skewness, kurtosis, and the results of a normality test. These data are useful
  * if the research seeks to examine whether the selection coordinates form a Gaussian distribution,
- * as assumed in the signal-and-noise model from which Fittsí law emerged. The
+ * as assumed in the signal-and-noise model from which Fitts‚Äô law emerged. The
  * <code>Is_normal?</code> output is the result of a normality test. The null hypothesis is that the
  * selection coordinates are normally distributed (<i>p</i> < .05). The Lilliefors test is used. If
  * false is returned the null hypothesis is rejected, implying the distribution is not normal. If
  * true is returned the null hypothesis is not rejected, implying the distribution has passed the
  * test for normality.
  * <p>
- * 
+ *
  * The <code>Throughput</code> utility also outputs the number of misses in the sequence and the
  * error rate (%). These data were not explicitly provided to the <code>Throughput</code> class.
  * They are calculated based on the geometry of the trials, the task type, and the selection
@@ -449,10 +449,10 @@ import java.util.StringTokenizer;
  * finger input on a touchscreen device. The outcome was <i>TP</i> = 7.94 bps. This value is higher
  * than the <i>TP</i> typically reported for the mouse, which is generally in the 4 to 5 bps range.
  * <p>
- * 
- * The <code>ñt</code> (table) option produces informative output; however, the organization is
+ *
+ * The <code>‚Äìt</code> (table) option produces informative output; however, the organization is
  * awkward if the analysis involves hundreds of sequences of trials, as typical in experimental
- * research. For this, the <code>ñs</code> (summary) option is more useful. With the <code>ñs</code>
+ * research. For this, the <code>‚Äìs</code> (summary) option is more useful. With the <code>‚Äìs</code>
  * option, the output is a rectangular, comma-delimited matrix with full-precision data. There is a
  * header row followed by one summary row per sequence. The number of columns is <i>n</i> + 15,
  * where <i>n</i> is the number of comma-delimited items in the code string (see the first two lines
@@ -460,54 +460,54 @@ import java.util.StringTokenizer;
  * the code columns contain the summary data, excluding the raw data. The header line identifies the
  * data in each column.
  * <p>
- * 
- * The goal with the <code>ñs</code> option is to provide output suitable for importing into a
+ *
+ * The goal with the <code>‚Äìs</code> option is to provide output suitable for importing into a
  * spreadsheet or statistics application where the real work of analysing the data begins. Here's an
  * example for the data in <code><a href="example-data.txt">example-data.txt</a></code>:
  * <p>
- * 
+ *
  * <pre>
  *      PROMPT>java Throughput example-data.txt -s
  *      Participant,Block,Group,Condition,Task,Response,A,W,ID,N,Skewness,Kurtosis,IsNormal,Ae,We,IDe,MT,Misses,Throughput
  *      P07,B05,G03,C03,1D,Serial,312.406770,130.169500,1.765535,20,0.511808,0.314840,true,327.058351,106.062885,2.029851,252.340000,1,8.044111
  * </pre>
  * <p>
- * 
+ *
  * Imported into a spreadsheet, the data above appear as follows (click to enlarge):
  * <p>
- * 
+ *
  * <center> <a href="Throughput-2.jpg"><img src="Throughput-2.jpg" width=700></a> </center>
  * <p>
- * 
+ *
  * Of course, this is just a simple example. For a complete experiment, the data are likely to span
  * hundreds, perhaps thousands, of rows. With these, the task of summarizing and analysing the data
  * begins.
  * <p>
- * 
+ *
  * Good luck. For comments or questions, please get in touch (<code>mack "at" cse.yorku.ca</code> ).
  * <p>
- * 
+ *
  * <h3>References</h3>
  * <p>
- * 
+ *
  * Fitts, P. M., <a href="http://psycnet.apa.org/journals/xge/121/3/262/">The information capacity
  * of the human motor system in controlling the amplitude of movement</a>, <i>Journal of
  * Experimental Psychology</i>, <i>47</i>, 1954, 381-391. [<a href=
  * "https://www.cs.colorado.edu/~palen/courses/5919/CourseReadings/INFORMATION%20CAPACITY%20OF%20THE%20HUMAN%20MOTOR%20SYSTEM.pdf"
  * >PDF</a> &ndash; 1992 reprint]
  * <p>
- * 
+ *
  * MacKenzie, I. S., <a href="http://www.yorku.ca/mack/HCI.html">Fitts' law as a research and design
  * tool in human-computer interaction</a>, <i>Human-Computer Interaction</i>, <i>7</i>, 1992,
  * 91-139. [<a href="http://www.yorku.ca/mack/hci1992.pdf">PDF</a>]
  * <P>
- * 
+ *
  * Soukoreff, R. W. and MacKenzie, I. S., <a href="http://www.yorku.ca/mack/ijhcs2004.html">Towards
  * a standard for pointing device evaluation: Perspectives on 27 years of Fitts' law research in
  * HCI</a>, <i>International Journal of Human-Computer Studies</i>, <i>61</i>, 2004, 751-789. [<a
  * href="http://www.yorku.ca/mack/ijhcs2004.pdf">PDF</a>]
  * <P>
- * 
+ *
  * @author Scott MacKenzie and William Soukoreff, 2013-2015
  */
 public class Throughput
@@ -557,7 +557,7 @@ public class Throughput
 	/**
 	 * Set the data for this Throughput object. This method can be used to provide a new set of the
 	 * data to the Throughput object (without instantiated a new object).
-	 * 
+	 *
 	 */
 	public void setData(String codeArg, double amplitudeArg, double widthArg, int taskTypeArg, int responseTypeArg,
 			Point2D.Double[] fromArg, Point2D.Double[] toArg, Point2D.Double[] selectArg, double[] mtArg)
@@ -594,7 +594,7 @@ public class Throughput
 			 * Compute the effective movement amplitude. The computed amplitude, a, is adjusted by
 			 * adding dx at the end of the trial to give the actual amplitude moved (as projected on
 			 * the task axis).
-			 * 
+			 *
 			 * For serial tasks, we also adjust for the starting position by adding dx from the
 			 * previous trial (if i > 0).
 			 */
@@ -629,26 +629,26 @@ public class Throughput
 	 * The amplitude passed is the distance between the center of the two targets -- the "from" and
 	 * "to" targets. This is identical for each trial in the sequence. The 2D case is more
 	 * complicated.
-	 * 
+	 *
 	 * For the 2D case, the amplitude passed to the Throughput object is the diameter of the layout
 	 * circle. This value is not necessarily the amplitude of movement for the trials, even if the
 	 * movements are perfectly executed. The movement amplitudes for perfect movements are
 	 * calculated here, and given the label "taskAdjustedAmplitude". The calculations are different
 	 * depending on whether there is an even number of targets or an odd number of targets.
-	 * 
+	 *
 	 * 2D - Even Number of Targets. If there is an even number of targets, the first trial (index =
 	 * 0) begins by selecting the start target and then moving directly across the layout circle to
 	 * the target on the opposite side. The movement distance equals the diameter of the layout
 	 * circle. However, the next trial (index = 1) is to the target beside the start target. The
 	 * movement distance in this case is less than the diameter of the layout circle. The movement
 	 * distance depends on the number of targets.
-	 * 
+	 *
 	 * 2D - Odd Number of Targets. If there is an odd number of targets, the movement distance is
 	 * the same for every trial. The distance is less than the diameter of the layout circle,
 	 * because the target is slightly displaced from the location directly across the layout circle.
-	 * 
+	 *
 	 * The calculations below account for the peculiarities of the tasks, as just described.
-	 * 
+	 *
 	 * When all the calculations are done, we compare the taskAdjustedAmplitude to the value "a"
 	 * calculated in the setData method and passed here as an argument. The taskAdjustedAmplitude
 	 * and a should be the same. Because we are dealing with floating point arithmetic and there may
@@ -854,7 +854,7 @@ public class Throughput
 
 	/**
 	 * Returns the specified amplitude for the trials in this sequence.
-	 * 
+	 *
 	 * NOTE: This value is not used in calculating Throughput. It is provided only as a convenience.
 	 */
 	public double getA()
@@ -874,7 +874,7 @@ public class Throughput
 
 	/**
 	 * Returns the specified target width for this sequence of trials.
-	 * 
+	 *
 	 * NOTE: This value is not used in calculating Throughput. It is provided only as a convenience.
 	 */
 	public double getW()
@@ -895,7 +895,7 @@ public class Throughput
 	/**
 	 * Returns the specified index of difficulty for this sequence of trials. The specified index of
 	 * difficulty is ID = log2(A/W + 1).
-	 * 
+	 *
 	 * NOTE: This value is not used in calculating Throughput. It is provided only as a convenience.
 	 */
 	public double getID()
@@ -971,18 +971,18 @@ public class Throughput
 	 * These are used in computing deltaX, which is the distance from the selection coordinate to
 	 * the target center, as projected on the task axis.
 	 * <p>
-	 * 
+	 *
 	 * NOTE: This calculation is correct, but a diagram helps to visualize the geometry. deltaX is
 	 * negative for a selection on the "near side" of the target center (undershoot) and positive
 	 * for a selection on the "far side" of the target center (overshoot). For a near-side
 	 * selection, the a-b-c triangle is acute (i.e., a^2 + b^2 > c^2). For a far-side selection the
 	 * a-b-c triangle is obtuse (i.e., a^2 + b^2 < c^2).
 	 * <p>
-	 * 
+	 *
 	 * NOTE: This method is defined as a static method so that is may be called by an application on
 	 * a per-trial basis. Recall that instances of the Throughput class work with the data for the
 	 * entire sequence.
-	 * 
+	 *
 	 */
 	public static double getTrialDeltaX(Point2D.Double from, Point2D.Double to, Point2D.Double select)
 	{
@@ -1025,17 +1025,17 @@ public class Throughput
 	 * (the selection coordinate). These are used in computing Ae, which is A (the distance between
 	 * the "from" and "to" points) plus deltaX. See as well, getTrialDeltaX.
 	 * <p>
-	 * 
+	 *
 	 * NOTE: The value of Ae calculated here assumes the trial started at the "from" coordinate. For
 	 * serial responses, this may not be the case. An additional adjustment may be warranted for the
 	 * beginning of the trial, such as adding deltaX from the previous trial (for all trials after
 	 * the first trial in a sequence).
 	 * <p>
-	 * 
+	 *
 	 * NOTE: This method is defined as a static method so that is may be called by an application on
 	 * a per-trial basis. Recall that instances of the Throughput class work with the data for the
 	 * entire sequence.
-	 * 
+	 *
 	 */
 	public static double getTrialAe(Point2D.Double from, Point2D.Double to, Point2D.Double select)
 	{
