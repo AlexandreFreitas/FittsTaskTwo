@@ -8,54 +8,54 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * <h1>FittsTaskTwoTrace</h1>
- * 
+ *
  * <h3>Summary</h3>
- * 
+ *
  * <ul>
  * <li>Utility software to plot the trace data in the sd3 files created by FittsTaskTwo or
  * FittsTaskOne.
  * </ul>
  * <p>
- * 
+ *
  * <h3>Related References</h3>
- * 
+ *
  * The following publications include figures showing trace data that were gathered using a version
  * of this software:
  * <p>
- * 
+ *
  * <ul>
- * 
+ *
  * <li><a href="http://www.yorku.ca/mack/hcii2015b.html">Camera mouse + ClickerAID: Dwell vs.
  * single-muscle click actuation in mouse-replacement interfaces </a>, by Magee, Felzer, and
  * MacKenzie (<i>HCII 2015</i>).
  * <p>
- * 
+ *
  * <li><a href="http://www.yorku.ca/mack/gi2014.html">Position vs. velocity control for tilt-based
  * interaction</a>, by Teather and MacKenzie (<i>GI 2014</i>) (Figure 13)
  * <p>
- * 
- * <li><a href="http://www.yorku.ca/mack/nordichi2012.html">FittsTilt: The application of Fitts’ law
+ *
+ * <li><a href="http://www.yorku.ca/mack/nordichi2012.html">FittsTilt: The application of Fittsâ€™ law
  * to tilt-based interaction</a>, by MacKenzie and Teather (<i>NordiCHI 2012</i>) (Figure 9, Figure
  * 11)
  * <p>
- * 
+ *
  * <li><a href="http://www.yorku.ca/mack/cogain.html"> Evaluating eye tracking systems for computer
  * input</a>, by MacKenzie (in Majaranta, P., Aoki, H., Donegan, M., Hansen, D. W., Hansen, J. P.,
- * Hyrskykari, A., & Räihä, K.-J. (Eds.). (2012). <i>Gaze interaction and applications of eye
+ * Hyrskykari, A., & RÃ¤ihÃ¤, K.-J. (Eds.). (2012). <i>Gaze interaction and applications of eye
  * tracking: Advances in assistive technologies</i>, pp. 205-225. Hershey, PA: IGI Global.) (Figure
  * 15)
  * <p>
- * 
+ *
  * <li><a href="http://www.yorku.ca/mack/FuturePlay1.html">The trackball controller: Improving the
  * analog stick</a>, by Natapov and MacKenzie (<i>FuturePlay 2010</i>) (Figure 10, Figure 11)
  * </ul>
- * 
+ *
  * <h3>Input Data Format</h3>
- * 
+ *
  * The sd3 data processed by this application must be in a specific format. The first two lines are
  * for information only and are discarded. In the example sd3 file (see below), the first line is a
  * title and the second line contains comma-delimited labels identifying the rest of the data:
- * 
+ *
  * <pre>
  *     application name
  *     participant code
@@ -71,35 +71,35 @@ import javax.swing.filechooser.FileFilter;
  *     to_y - centre y coordinate of target circle
  *     identifier ("t=", "x=", or "y=")
  * </pre>
- * 
+ *
  * The trace data begin after the first two lines just noted. Each trace is encoded in three
  * consecutive lines: (i) the timestamps, (ii) the <i>x</i> samples, and (iii) the <i>y</i> samples.
  * <a href="FittsTaskTwo-sd3-example.txt">Click here</a> for an example of an sd3 data file.
  * <p>
- * 
+ *
  * <h3>Running the Experiment Software</h3>
  * <p>
- * 
+ *
  * <a href="http://www.yorku.ca/mack/HCIbook/Running/">Click here</a> for instructions on
  * launching/running the application.
  * <p>
- * 
+ *
  * Upon launching, a file open dialog appears to choose an sd3 file:
  * <p>
- * 
- * 
+ *
+ *
  * <center><a href="FittsTaskTwoTrace-0.jpg"><img src="FittsTaskTwoTrace-0.jpg"
  * width="500"></a></center>
  * <p>
- * 
+ *
  * <h3>Example Traces</h3>
- * 
+ *
  * The following screen snap shows the trace data from the example sd3 file:
  * <p>
  * <center><a href="FittsTaskTwoTrace-1.jpg"><img src="FittsTaskTwoTrace-1.jpg"
  * width="500"></a></center>
  * <p>
- * 
+ *
  * As well as identifying the test conditions, the UI displays the performance data associated with
  * the traces, including the mean movement time, the error rate, and the mean of the accuracy
  * measures. (The latter are described in <a href="http://www.yorku.ca/mack/CHI01.htm">Accuracy
@@ -107,23 +107,23 @@ import javax.swing.filechooser.FileFilter;
  * (2001); see as well the <a href="AccuracyMeasures.html">API</a> for the
  * <code>AccuracyMeasures</code> class.)
  * <p>
- * 
+ *
  * A checkbox entry along the bottom of the UI allows the trace data to be inspected for individual
  * trials:
  * <p>
  * <center><a href="FittsTaskTwoTrace-2.jpg"><img src="FittsTaskTwoTrace-2.jpg"
  * width="500"></a></center>
  * <p>
- * 
+ *
  * In trial mode, the performance data correspond to individual trials, rather than a sequence of
  * trials.
  * <p>
- * 
+ *
  * There are additional checkbox entries to adjust the scale of the display and to control whether
  * the output shows the traces (default), the sample points, or both the traces and the sample
  * points (see above).
  * <p>
- * 
+ *
  * @author Scott MacKenzie, 2009-2015
  */
 public class FittsTaskTwoTrace
@@ -471,6 +471,7 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 					int j;
 					for (j = 0; j < p.length - 1; ++j)
 					{
+						if(trialMode && trialCounter != t[i].getTrialNumber()) continue;
 						double x1 = offsetX + scale * p[j].getX();
 						double y1 = offsetY + scale * p[j].getY();
 						double x2 = offsetX + scale * p[j + 1].getX();
@@ -478,14 +479,23 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 						Line2D.Double inkSegment = new Line2D.Double(x1, y1, x2, y2);
 						g2.setColor(new Color(0, 0, 128)); // deep blue
 
-						if (traces && (!trialMode || (trialMode && trialCounter == t[i].getTrialNumber())))
+						if (traces)
 							g2.draw(inkSegment); // draw it!
 						Ellipse2D.Double pt = new Ellipse2D.Double(x2 - 1, y2 - 1, 3, 3);
 
-						if (points && (!trialMode || (trialMode && trialCounter == t[i].getTrialNumber())))
+						if (points)
 						{
 							g2.draw(pt);
 							g2.fill(pt);
+						}
+
+						if(j == t[i].getDownIdx()) {
+							double x = offsetX + scale * p[j].getX() - 2;
+							double y = offsetY + scale * p[j].getY() - 2;
+							Ellipse2D.Double e = new Ellipse2D.Double(x, y, 5, 5);
+							g2.setColor(Color.blue);
+							g2.draw(e);
+							g2.fill(e);
 						}
 					}
 
@@ -693,6 +703,7 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 					int y1 = Integer.parseInt(stx.nextToken()); // from_y
 					int x2 = Integer.parseInt(stx.nextToken()); // to_x
 					int y2 = Integer.parseInt(stx.nextToken()); // to_y
+					int downIdx = Integer.parseInt(stx.nextToken()); // down_idx
 
 					stx.nextToken(); // x= (trace data begins with next token)
 
@@ -705,8 +716,10 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 					sty.nextToken();
 					sty.nextToken();
 					sty.nextToken();
+					sty.nextToken();
 
 					stt.nextToken(); // skip over the header info for the t data
+					stt.nextToken();
 					stt.nextToken();
 					stt.nextToken();
 					stt.nextToken();
@@ -726,7 +739,7 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 						int y = Integer.parseInt(sty.nextToken());
 						traceData[i] = new Point(x, y);
 					}
-					v.add(new Trial(sequence, a, w, trialNumber, x1, y1, x2, y2, timeStamp, traceData));
+					v.add(new Trial(sequence, a, w, trialNumber, x1, y1, x2, y2, downIdx, timeStamp, traceData));
 				}
 			} catch (Exception e)
 			{
@@ -908,10 +921,11 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 		int y1;
 		int x2;
 		int y2;
+		int downIdx;
 		int[] t;
 		Point[] p;
 
-		Trial(int sequenceArg, int aArg, int wArg, int trialNumberArg, int x1Arg, int y1Arg, int x2Arg, int y2Arg,
+		Trial(int sequenceArg, int aArg, int wArg, int trialNumberArg, int x1Arg, int y1Arg, int x2Arg, int y2Arg, int downIdxArg,
 				int[] tArg, Point[] pArg)
 		{
 			sequence = sequenceArg;
@@ -922,6 +936,7 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 			y1 = y1Arg;
 			x2 = x2Arg;
 			y2 = y2Arg;
+			downIdx = downIdxArg;
 			t = tArg;
 			p = pArg;
 		}
@@ -987,6 +1002,11 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 		public int getY2()
 		{
 			return y2;
+		}
+
+		public int getDownIdx()
+		{
+			return downIdx;
 		}
 
 		public int[] getT()

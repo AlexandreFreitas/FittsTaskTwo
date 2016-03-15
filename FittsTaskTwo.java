@@ -657,6 +657,7 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 	private long mt;
 	private long buttonDown; // button down time
 	private long buttonUp; // button up time
+	private int buttonDownIdx; // button down sample index
 	private long tOld;
 	private long start;
 	// private int sequenceRepeatCount;
@@ -763,7 +764,7 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 
 			// sd3 header
 			s = "TRACE DATA\n";
-			s += "App,Participant,Condition,Block,Sequence,A,W,Trial,from_x,from_y,to_x,to_y,{t_x_y}\n";
+			s += "App,Participant,Condition,Block,Sequence,A,W,Trial,from_x,from_y,to_x,to_y,down_idx,{t_x_y}\n";
 			bw3.write(s, 0, s.length());
 			bw3.flush();
 		} catch (IOException e)
@@ -915,7 +916,7 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 
 	// a mouse button was pressed
 
-	public void mouseReleased(MouseEvent me)
+	public void mousePressed(MouseEvent me)
 	{
 		buttonDown = me.getWhen();
 		beginTrial = true;
@@ -935,6 +936,7 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 
 		if (trial > 0)
 		{
+			buttonDownIdx = sIdx;
 			tSample[sIdx] = me.getWhen() - buttonUp;
 			xySample[sIdx].x = me.getX();
 			xySample[sIdx++].y = me.getY();
@@ -945,7 +947,7 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 	// M O U S E _ R E L E A S E D
 	// ===========================
 
-	public void mousePressed(MouseEvent me)
+	public void mouseReleased(MouseEvent me)
 	{
 		int x = me.getX();
 		int y = me.getY();
@@ -960,12 +962,6 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 		if (trial == 0 && !inTarget)
 			return;
 
-		if (buttonDownHighlight)
-			if (inTarget)
-				tp.buttonDownHighlightOn();
-			else
-				tp.buttonDownHighlightOff();
-
 		// at beginning of 1st trial, set buttonUp now
 		if (trial == 0)
 			buttonUp = me.getWhen();
@@ -976,7 +972,6 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 		xySample[sIdx++].y = me.getY();
 
 		buttonUp = me.getWhen(); // new button up
-		buttonDown = me.getWhen(); // new button up
 
 		xClick[trial] = x;
 		clickPoint[trial] = new Point(x, y);
@@ -1023,7 +1018,7 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 			String leadin = "FittsTaskTwo" + "," + c.getParticipantCode() + "," + c.getConditionCode() + ","
 					+ c.getBlockCode() + "," + tp.getCurrentSequence() + "," + Math.round(t.amplitude) + ","
 					+ Math.round(t.width) + "," + trial + "," + Math.round(t.xFrom) + "," + Math.round(t.yFrom) + ","
-					+ Math.round(t.xTo) + "," + Math.round(t.yTo) + ",";
+					+ Math.round(t.xTo) + "," + Math.round(t.yTo) + "," + buttonDownIdx + ",";
 			String s1 = leadin;
 			s1 += "t=,";
 			for (int i = 0; i < sIdx; ++i)

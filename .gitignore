@@ -1,5 +1,6 @@
 FittsTaskTwo
 build
+tracebuild
 *.sd*
 *.jar
 *.html

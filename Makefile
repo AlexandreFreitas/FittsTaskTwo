@@ -10,3 +10,12 @@ run: all
 
 clean:
 	rm -r build
+	rm -r tracebuild
+
+trace:
+	mkdir -p ./tracebuild
+	javac -d ./tracebuild FittsTaskTwoTrace.java
+	cd ./tracebuild; jar cvf FittsTaskTwoTrace.jar *.class
+
+tracerun: trace
+	cd tracebuild; java FittsTaskTwoTrace
