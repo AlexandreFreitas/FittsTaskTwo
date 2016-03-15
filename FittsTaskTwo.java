@@ -743,9 +743,9 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 		try
 		{
 			bw1 = new BufferedWriter(new FileWriter(fileName + "-sd1.csv"));
-			bw1d = new BufferedWriter(new FileWriter(fileName + "-dd1.csv"));
+			bw1d = new BufferedWriter(new FileWriter(fileName + "-sd1d.csv"));
 			bw2 = new BufferedWriter(new FileWriter(fileName + "-sd2.csv"));
-			bw2d = new BufferedWriter(new FileWriter(fileName + "-dd2.csv"));
+			bw2d = new BufferedWriter(new FileWriter(fileName + "-sd2d.csv"));
 			bw3 = new BufferedWriter(new FileWriter(fileName + "-sd3.csv"));
 		} catch (IOException e)
 		{
@@ -955,6 +955,30 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 	// M O U S E _ R E L E A S E D
 	// ===========================
 
+	private void recordTrial(FittsTaskTwoTrial t, int selectSampleIdx, int error) {
+			t.setXFrom(tp.centerPoint[tp.targetOrder[trial - 1]].x);
+			t.setYFrom(tp.centerPoint[tp.targetOrder[trial - 1]].y);
+			t.setXTo(tp.centerPoint[tp.targetOrder[trial]].x);
+			t.setYTo(tp.centerPoint[tp.targetOrder[trial]].y);
+			t.setXSelect(xySample[selectSampleIdx].x);
+			t.setYSelect(xySample[selectSampleIdx].y);
+
+			// set the Ae and deltaX for the trial (let the Throughput class do the work)
+			t.setAe(Throughput.getTrialAe(new Point2D.Double(t.xFrom, t.yFrom), new Point2D.Double(t.xTo, t.yTo),
+					new Point2D.Double(t.xSelect, t.ySelect)));
+			t.setDx(Throughput.getTrialDeltaX(new Point2D.Double(t.xFrom, t.yFrom), new Point2D.Double(t.xTo, t.yTo),
+					new Point2D.Double(t.xSelect, t.ySelect)));
+
+			t.setPt(mt - tOld - (buttonUp - buttonDown));
+			t.setSt(buttonUp - buttonDown);
+			t.setMt(mt - tOld);
+			t.setErr(error);
+
+			// trace-related data for sd3 file (store in Trial object)
+			t.setTraceTimestamps(tSample, selectSampleIdx+1);
+			t.setTracePoints(xySample, selectSampleIdx+1);
+	}
+
 	public void mouseReleased(MouseEvent me)
 	{
 		int x = me.getX();
@@ -1000,27 +1024,11 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 		if (trial > 0) // process trial (first click doesn't count)
 		{
 			FittsTaskTwoTrial t = block.getSequence(block.getIDX()).getTrial(trial - 1);
-			t.setXFrom(tp.centerPoint[tp.targetOrder[trial - 1]].x);
-			t.setYFrom(tp.centerPoint[tp.targetOrder[trial - 1]].y);
-			t.setXTo(tp.centerPoint[tp.targetOrder[trial]].x);
-			t.setYTo(tp.centerPoint[tp.targetOrder[trial]].y);
-			t.setXSelect(xySample[sIdx - 1].x);
-			t.setYSelect(xySample[sIdx - 1].y);
+			recordTrial(t, sIdx - 1, error);
 
-			// set the Ae and deltaX for the trial (let the Throughput class do the work)
-			t.setAe(Throughput.getTrialAe(new Point2D.Double(t.xFrom, t.yFrom), new Point2D.Double(t.xTo, t.yTo),
-					new Point2D.Double(t.xSelect, t.ySelect)));
-			t.setDx(Throughput.getTrialDeltaX(new Point2D.Double(t.xFrom, t.yFrom), new Point2D.Double(t.xTo, t.yTo),
-					new Point2D.Double(t.xSelect, t.ySelect)));
-
-			t.setPt(mt - tOld - (buttonUp - buttonDown));
-			t.setSt(buttonUp - buttonDown);
-			t.setMt(mt - tOld);
-			t.setErr(error);
-
-			// trace-related data for sd3 file (store in Trial object)
-			t.setTraceTimestamps(tSample, sIdx);
-			t.setTracePoints(xySample, sIdx);
+			FittsTaskTwoTrial t2 = block.getSequenceDown(block.getIDX()).getTrial(trial - 1);
+			int error2 = tp.inTarget(xySample[buttonDownIdx].x,xySample[buttonDownIdx].y, 1.0) ? 0 : 1;
+			recordTrial(t2, buttonDownIdx, error2);
 
 			// collect trace data at end of trial
 			String leadin = "FittsTaskTwo" + "," + c.getParticipantCode() + "," + c.getConditionCode() + ","
@@ -1060,12 +1068,15 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 		// end of sequence, see if it needs to be repeated
 		{
 			block.getSequence(block.getIDX()).computeSequenceSummaryStats();
+			block.getSequenceDown(block.getIDX()).computeSequenceSummaryStats();
 			double errorRate = block.getSequence(block.getIDX()).getER();
+			double errorRate2 = block.getSequenceDown(block.getIDX()).getER();
 
-			if (errorRate > errorThreshold) // sequence must be repeated
+			if (errorRate > errorThreshold && errorRate2 > errorThreshold) // sequence must be repeated
 			{
 				// ++sequenceRepeatCount;
 				block.getSequence(block.getIDX()).incrementSequenceRepeatCount();
+				block.getSequenceDown(block.getIDX()).incrementSequenceRepeatCount();
 				s = block.getSequence(block.getIDX()).getRepeatSequence();
 				repeatSequence.setText(s);
 				JOptionPane.showMessageDialog(this, repeatSequence, "Repeat Sequence", JOptionPane.INFORMATION_MESSAGE);
@@ -1097,6 +1108,17 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 					showError("I/O error writing to sd1 file");
 					System.exit(1);
 				}
+				s = "FittsTaskTwo" + "," + c.getParticipantCode() + "," + c.getConditionCode() + "," + c.getBlockCode()
+						+ "," + block.getSequenceDown(block.getIDX()).getTrialData(i) + "\n";
+				try
+				{
+					bw1d.write(s, 0, s.length());
+					bw1d.flush();
+				} catch (IOException e)
+				{
+					showError("I/O error writing to sd1d file");
+					System.exit(1);
+				}
 
 				// write trace data to sd3 file
 				Iterator<String> it;
@@ -1123,24 +1145,34 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 
 			if (block.lastSequence()) // end of last sequence (done!)
 			{
-				block.buildArrays();
+				block.buildArrays(false);
+				block.buildArrays(true);
 				for (int i = 0; i < block.getSequences(); ++i)
 				{
 					s = "FittsTaskTwo" + "," + c.getParticipantCode() + "," + c.getConditionCode() + ","
 							+ c.getBlockCode() + "," + block.getSequenceData(i) + "\n";
-					try
-					{
+					try {
 						bw2.write(s, 0, s.length());
-					} catch (IOException e)
-					{
+					} catch (IOException e) {
 						showError("I/O error writing data to sd2 file");
+						System.exit(1);
+					}
+
+					s = "FittsTaskTwo" + "," + c.getParticipantCode() + "," + c.getConditionCode() + ","
+							+ c.getBlockCode() + "," + block.getSequenceDataDown(i) + "\n";
+					try {
+						bw2d.write(s, 0, s.length());
+					} catch (IOException e) {
+						showError("I/O error writing data to sd2d file");
 						System.exit(1);
 					}
 				}
 				try
 				{
 					bw1.close();
+					bw1d.close();
 					bw2.close();
+					bw2d.close();
 				} catch (IOException e)
 				{
 					showError("Error closing data files");

@@ -96,18 +96,19 @@ class FittsTaskTwoBlock
 		return sequenceOrder[idx];
 	}
 
-	public void buildArrays()
+	public void buildArrays(boolean useMouseDown)
 	{
+		FittsTaskTwoSequence[] seq = useMouseDown ? sequenceDown : sequence;
 		// these arrays hold the values for each sequence in the block
-		for (int i = 0; i < sequence.length; ++i)
+		for (int i = 0; i < seq.length; ++i)
 		{
-			mt[i] = sequence[i].getMT();
-			pt[i] = sequence[i].getMT() - sequence[i].getST();
-			st[i] = sequence[i].getST();
-			er[i] = sequence[i].getER();
-			id[i] = sequence[i].getID();
-			ide[i] = sequence[i].getIDe();
-			tp[i] = sequence[i].getTP();
+			mt[i] = seq[i].getMT();
+			pt[i] = seq[i].getMT() - seq[i].getST();
+			st[i] = seq[i].getST();
+			er[i] = seq[i].getER();
+			id[i] = seq[i].getID();
+			ide[i] = seq[i].getIDe();
+			tp[i] = seq[i].getTP();
 		}
 	}
 

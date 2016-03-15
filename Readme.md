@@ -7,3 +7,5 @@ I've made the following modifications:
 
 - Adding a Makefile
 - Recording the mouse down instant in the `.sd3` file and showing it as a blue dot in the `FittsTaskTwoTrace` app
+- Rename files to end like `-sd1.csv` and added a second set of output files based on mouse down ending like `-sd1d.csv`
+- Populated the `-sd1d.csv` and `-sd2d.csv` files with data computed based on button down location but still time based on release.
