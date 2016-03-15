@@ -6,16 +6,16 @@ import java.util.StringTokenizer;
 
 /**
  * <h1>AccuracyMeasures</h1>
- * 
+ *
  * <h3>Summary</h3>
- * 
+ *
  * <ul>
  * <li>A class or application to perform accuracy measurements on the path of a cursor during target
  * selection tasks
  * <p>
- * 
+ *
  * <li>The accuracy measures computed are
- * 
+ *
  * <ul>
  * <li>TRE (target re-entries)
  * <li>TAC (task axis crossings)
@@ -26,30 +26,30 @@ import java.util.StringTokenizer;
  * <li>ME (movement error)
  * </ul>
  * <p>
- * 
+ *
  * <li>Full descriptions are in <a href="http://www.yorku.ca/mack/CHI01.htm">Accuracy Measures for
  * Evaluating Computer Pointing Devices</a> by MacKenzie, Kauppinen, and Silfverberg (2001).
  * <p>
- * 
+ *
  * <li>Two uses:
- * 
+ *
  * <ul>
  * <li>As a class embedded in custom-designed software
  * <li>As a utility program executed from a command prompt
  * </ul>
  * <p>
  * </ul>
- * 
+ *
  * <h3>AccuracyMeasures Class</h3>
  * <p>
- * 
+ *
  * As a class embedded in custom-designed software, the <code>AccuracyMeasures</code> class file is
  * placed in the same directory as other class files for the application. This API provides all the
  * details necessary to use the <code>AccuracyMeasures</code> class. An
  * <code>AccuracyMeasures</code> object requires the following arguments (data) which are provided
  * either via the constructor or using the <code>setData</code> method:
  * <p>
- * 
+ *
  * <ul>
  * <li><code>from</code> &ndash; a <code>Point2D.Double</code> holding the coordinate of the
  * designated beginning of the trial (center of the "from" target)
@@ -63,36 +63,36 @@ import java.util.StringTokenizer;
  * <li><code>path</code> &ndash; a <code>Point2D.Double</code> array holding the points representing
  * the path of the cursor during the trial
  * </ul>
- * 
+ *
  * Once the data are provided to the <code>AccuracyMeasures</code> object, the accuracy measures are
  * immediately calculated. They are retrieved in the application using get-methods.
  * <p>
- * 
+ *
  * <h3>AccuracyMeasures Utility Program</h3>
  * <p>
- * 
+ *
  * As a utility program, <code>AccuracyMeasures</code> is executed from a command prompt. The
  * following is the usage message, if invoked without arguments:
  * <p>
- * 
+ *
  * <pre><blockquote>
  * Usage: java AccuracyMeasures -d|infile [-t] [-v]
- * 
+ *
  *    where -d = demo using internal data set
  *          infile = read data from 'infile'
  *          -t = table output
  *          -v = verbose output
  *</pre>
  * </blockquote>
- * 
+ *
  * There must be at least one command-line argument. This is <code>-d</code> for the demo option, or
  * the name of a file containing the input data to process (see below).
  * <p>
- * 
+ *
  * A good way to get started is to execute <code>AccuracyMeasures</code> from the command prompt
  * with the <code>-d</code> (demo) option:
  * <p>
- * 
+ *
  * <pre><blockquote>
  *PROMPT>java AccuracyMeasures -d
  *========================
@@ -104,25 +104,25 @@ Amplitude = 483.0
 Width = 60.0
 Number of sample points = 149
 Sample points...
-(842.0, 499.0) (847.0, 501.0) (850.0, 503.0) (852.0, 504.0) (854.0, 505.0) (856.0, 506.0) (858.0, 507.0) (860.0, 507.0) 
-(863.0, 508.0) (864.0, 508.0) (865.0, 507.0) (865.0, 505.0) (862.0, 501.0) (858.0, 496.0) (854.0, 490.0) (848.0, 483.0) 
-(839.0, 474.0) (830.0, 465.0) (819.0, 455.0) (807.0, 445.0) (794.0, 434.0) (781.0, 423.0) (768.0, 412.0) (754.0, 401.0) 
-(742.0, 391.0) (728.0, 380.0) (715.0, 368.0) (699.0, 355.0) (688.0, 345.0) (675.0, 334.0) (659.0, 321.0) (637.0, 302.0) 
-(625.0, 292.0) (613.0, 282.0) (602.0, 273.0) (591.0, 265.0) (580.0, 257.0) (562.0, 247.0) (554.0, 242.0) (546.0, 238.0) 
-(539.0, 235.0) (534.0, 232.0) (528.0, 230.0) (523.0, 228.0) (520.0, 227.0) (516.0, 226.0) (514.0, 225.0) (511.0, 224.0) 
-(508.0, 223.0) (506.0, 222.0) (503.0, 221.0) (501.0, 219.0) (498.0, 218.0) (496.0, 217.0) (493.0, 216.0) (491.0, 215.0) 
-(488.0, 213.0) (486.0, 212.0) (484.0, 210.0) (482.0, 209.0) (482.0, 208.0) (481.0, 207.0) (481.0, 206.0) (481.0, 205.0) 
-(481.0, 204.0) (481.0, 203.0) (482.0, 202.0) (482.0, 202.0) (482.0, 202.0) (483.0, 201.0) (484.0, 201.0) (485.0, 200.0) 
-(486.0, 200.0) (490.0, 201.0) (492.0, 201.0) (495.0, 201.0) (497.0, 201.0) (500.0, 201.0) (503.0, 200.0) (506.0, 199.0) 
-(509.0, 199.0) (512.0, 197.0) (515.0, 195.0) (518.0, 193.0) (521.0, 190.0) (523.0, 187.0) (526.0, 182.0) (530.0, 174.0) 
-(533.0, 168.0) (536.0, 160.0) (537.0, 156.0) (538.0, 151.0) (540.0, 144.0) (541.0, 141.0) (541.0, 140.0) (542.0, 140.0) 
-(543.0, 141.0) (544.0, 142.0) (544.0, 145.0) (545.0, 148.0) (546.0, 154.0) (548.0, 160.0) (549.0, 168.0) (551.0, 176.0) 
-(553.0, 185.0) (556.0, 195.0) (558.0, 203.0) (560.0, 211.0) (563.0, 220.0) (566.0, 230.0) (568.0, 238.0) (571.0, 244.0) 
-(573.0, 250.0) (574.0, 253.0) (575.0, 258.0) (576.0, 262.0) (575.0, 270.0) (573.0, 269.0) (571.0, 268.0) (569.0, 266.0) 
-(567.0, 265.0) (565.0, 263.0) (563.0, 260.0) (562.0, 258.0) (559.0, 255.0) (557.0, 251.0) (552.0, 244.0) (548.0, 237.0) 
-(543.0, 232.0) (541.0, 229.0) (538.0, 226.0) (536.0, 223.0) (533.0, 220.0) (531.0, 217.0) (528.0, 213.0) (527.0, 211.0) 
-(525.0, 207.0) (523.0, 204.0) (521.0, 201.0) (519.0, 198.0) (517.0, 195.0) (515.0, 191.0) (514.0, 189.0) (512.0, 186.0) 
-(510.0, 184.0) (508.0, 181.0) (506.0, 179.0) (504.0, 177.0) (502.0, 175.0) 
+(842.0, 499.0) (847.0, 501.0) (850.0, 503.0) (852.0, 504.0) (854.0, 505.0) (856.0, 506.0) (858.0, 507.0) (860.0, 507.0)
+(863.0, 508.0) (864.0, 508.0) (865.0, 507.0) (865.0, 505.0) (862.0, 501.0) (858.0, 496.0) (854.0, 490.0) (848.0, 483.0)
+(839.0, 474.0) (830.0, 465.0) (819.0, 455.0) (807.0, 445.0) (794.0, 434.0) (781.0, 423.0) (768.0, 412.0) (754.0, 401.0)
+(742.0, 391.0) (728.0, 380.0) (715.0, 368.0) (699.0, 355.0) (688.0, 345.0) (675.0, 334.0) (659.0, 321.0) (637.0, 302.0)
+(625.0, 292.0) (613.0, 282.0) (602.0, 273.0) (591.0, 265.0) (580.0, 257.0) (562.0, 247.0) (554.0, 242.0) (546.0, 238.0)
+(539.0, 235.0) (534.0, 232.0) (528.0, 230.0) (523.0, 228.0) (520.0, 227.0) (516.0, 226.0) (514.0, 225.0) (511.0, 224.0)
+(508.0, 223.0) (506.0, 222.0) (503.0, 221.0) (501.0, 219.0) (498.0, 218.0) (496.0, 217.0) (493.0, 216.0) (491.0, 215.0)
+(488.0, 213.0) (486.0, 212.0) (484.0, 210.0) (482.0, 209.0) (482.0, 208.0) (481.0, 207.0) (481.0, 206.0) (481.0, 205.0)
+(481.0, 204.0) (481.0, 203.0) (482.0, 202.0) (482.0, 202.0) (482.0, 202.0) (483.0, 201.0) (484.0, 201.0) (485.0, 200.0)
+(486.0, 200.0) (490.0, 201.0) (492.0, 201.0) (495.0, 201.0) (497.0, 201.0) (500.0, 201.0) (503.0, 200.0) (506.0, 199.0)
+(509.0, 199.0) (512.0, 197.0) (515.0, 195.0) (518.0, 193.0) (521.0, 190.0) (523.0, 187.0) (526.0, 182.0) (530.0, 174.0)
+(533.0, 168.0) (536.0, 160.0) (537.0, 156.0) (538.0, 151.0) (540.0, 144.0) (541.0, 141.0) (541.0, 140.0) (542.0, 140.0)
+(543.0, 141.0) (544.0, 142.0) (544.0, 145.0) (545.0, 148.0) (546.0, 154.0) (548.0, 160.0) (549.0, 168.0) (551.0, 176.0)
+(553.0, 185.0) (556.0, 195.0) (558.0, 203.0) (560.0, 211.0) (563.0, 220.0) (566.0, 230.0) (568.0, 238.0) (571.0, 244.0)
+(573.0, 250.0) (574.0, 253.0) (575.0, 258.0) (576.0, 262.0) (575.0, 270.0) (573.0, 269.0) (571.0, 268.0) (569.0, 266.0)
+(567.0, 265.0) (565.0, 263.0) (563.0, 260.0) (562.0, 258.0) (559.0, 255.0) (557.0, 251.0) (552.0, 244.0) (548.0, 237.0)
+(543.0, 232.0) (541.0, 229.0) (538.0, 226.0) (536.0, 223.0) (533.0, 220.0) (531.0, 217.0) (528.0, 213.0) (527.0, 211.0)
+(525.0, 207.0) (523.0, 204.0) (521.0, 201.0) (519.0, 198.0) (517.0, 195.0) (515.0, 191.0) (514.0, 189.0) (512.0, 186.0)
+(510.0, 184.0) (508.0, 181.0) (506.0, 179.0) (504.0, 177.0) (502.0, 175.0)
 Accuracy measures...
 TRE = 1
 TAC = 4
@@ -134,47 +134,47 @@ MO = 20.53
 Done!
  * </pre>
  * </blockquote>
- * 
+ *
  * The demo uses embedded data for the <code>from</code>, <code>to</code>, <code>width</code>, and
  * <code>path</code> arguments. In the demo, the data are echoed to the console in a human-readable
  * format followed by the accuracy measures.
  * <p>
- * 
+ *
  * The data for the demo are available in a text file that is distributed with
  * <code>AccuracyMeasures</code>. The file is <a
  * href="AccuracyMeasures-demo.txt">AccuracyMeasures-demo.txt</a>. The same output is generated if
  * <code>AccuracyMeasures</code> is executed as follows:
  * <p>
- * 
+ *
  * <pre><blockquote>
  * PROMPT>java AccuracyMeasures AccuracyMeasures-demo.txt -t
  * (same output as above)
  * </pre>
  * </blockquote>
  * <p>
- * 
+ *
  * The accuracy measures in the demo indicate 1 target re-entry, 4 task axis crossings, 4 movement
  * direction changes, and so on. Clearly, cursor movement for this trial was not a direct line
  * between the "from" and "to" target points. With a little effort, a graphic rendering of the trial
  * can be created in Excel. Below is an example. The chart shows the "from" target, the "to" target,
  * the cursor path, and the task axis:
  * <p>
- * 
+ *
  * <center><img src="AccuracyMeasures-1.jpg" width="600"></center>
  * <p>
- * 
+ *
  * <a href="AccuracyMeasures-demo.xlsx">Click here</a> to view the spreadsheet used to create the
  * above chart. Using visual inspection, the accuracy measures can be assessed. One target re-entry
  * is evident, as are 4 task axis crossings, 4 movement direction changes, and 5 orthogonal
  * direction changes. The continuous measures of MV, ME, and MO are more difficult to quantify by
  * visual inspection. They can be verified by calculation in the spreadsheet, if desired.
  * <p>
- * 
+ *
  * The <code>-t</code> (table) option provides tabular output. While nice for a demo, this format is
  * awkward if analysing the data for numerous trials collected in an experiment. For this, the
  * <code>-t</code> option is omitted:
  * <p>
- * 
+ *
  * <pre><blockquote>
  * PROMPT>java AccuracyMeasures AccuracyMeasures-demo.txt
  * Participant,Session,Block,Gain,Mode,Trial,A,W,TRE,TAC,MDC,ODC,MV,MO,ME
@@ -182,16 +182,16 @@ Done!
  * </pre>
  * </blockquote>
  * <p>
- * 
+ *
  * The output contains two lines: a header line and a data line. Each entry in the header identifies
  * the type of information in the corresponding entry in the data. The entries are full-precision,
  * comma-delimited for importing into a spreadsheet or statistics application for further analyses.
  * <p>
- * 
+ *
  * In the output above, there are 15 comma-delimited values on each line. The first 8 hold a "code"
  * that associates test conditions with the 7 accuracy measures that follow.
  * <p>
- * 
+ *
  * The code entries in both lines are provided in the input data file. This allows the
  * <code>AccuracyMeasures</code> utility to be as flexible as possible. If your experiment included
  * "feedback mode" as independent variable, then "Feedback_Mode" can be provided as an entry in the
@@ -200,31 +200,31 @@ Done!
  * including the number of codes, is entirely determined in the data provided to the
  * <code>AccuracyMeasures</code> utility.
  * <p>
- * 
+ *
  * <h3>Input Data Format</h3>
  * <p>
- * 
+ *
  * To help describe the input data format, the data in <a
  * href="AccuracyMeasures-demo.txt">AccuracyMeasures-demo.txt</a> are copied below (slightly
  * abbreviated):
  * <p>
- * 
+ *
  * <pre><blockquote>
- *# ========================================          
-# Test data for the AccuracyMeasures class          
-# ========================================          
-Participant,Session,Block,Gain,Mode,Trial,A,W       
-P01,S01,B01,100,M1,2,500,60                         
-856.5,501.0                                         
-515.0,159.5                                         
-60                                                  
+ *# ========================================
+# Test data for the AccuracyMeasures class
+# ========================================
+Participant,Session,Block,Gain,Mode,Trial,A,W
+P01,S01,B01,100,M1,2,500,60
+856.5,501.0
+515.0,159.5
+60
 842,847,850,852,854,856,858,860,863,864,865,865,862, ...
 499,501,503,504,505,506,507,507,508,508,507,505,501, ...
 
 (data for the next trial begin here, after a blank line)
  * </pre>
  * </blockquote>
- * 
+ *
  * For each trial, the input data may begin with comments. Comment lines begin with "#". They are
  * ignored. The first non-blank, non-comment line must contain the code header. The comma-delimited
  * entries in the code header appear in the first line of output. The code header is provided once
@@ -237,11 +237,11 @@ P01,S01,B01,100,M1,2,500,60
  * <i>y</i>-points. Obviously, there must be the same number of comma-delimited entries in these two
  * lines.
  * <p>
- * 
+ *
  * Following the data, there is a blank line to separate the data for this trial from the data for
  * the next trial. This pattern is repeated for each trial to be processed.
  * <p>
- * 
+ *
  * Using the <code>AccuracyMeasures utility</code> requires input data as described above. As an
  * example, in the paper <a href="http://www.yorku.ca/mack/nordichi2012.html">FittsTilt: The
  * Application of Fitts' Law To Tilt-based Interaction</a> by MacKenzie and Teather (2012), accuracy
@@ -251,24 +251,24 @@ P01,S01,B01,100,M1,2,500,60
  * the general idea of how the <code>AccuracyMeasures</code> utility was used for this experiment.
  * The files are abbreviated to show only the first 50 trials.
  * <p>
- * 
+ *
  * <ul>
  * <li><a href="AccuracyMeasures-input.txt">AccuracyMeasures-input.txt</a> - the raw data from the
  * first 50 trials, in the required format.
  * <p>
- * 
+ *
  * <li><a href="AccuracyMeasures-output.txt">AccuracyMeasures-output.txt</a> - the output from the
  * <code>AccuracyMeasures</code> utility.
  * <p>
- * 
+ *
  * <li><a href="AccuracyMeasures-spreadsheet.xlsx">AccuracyMeasures-spreadsheet.xlsx</a> - the Excel
  * spreadsheet into which the data above were imported.
  * </ul>
- * 
+ *
  * Good luck. If you have any comments or suggestions, please get in touch (mack "at" cse.yorku.ca).
- * 
+ *
  * @author Scott MacKenzie, 2013-2015
- * 
+ *
  */
 public class AccuracyMeasures
 {
@@ -548,7 +548,7 @@ public class AccuracyMeasures
 	 * Set the threshold for computing task axis crossings. The threshold is the pixel distance the
 	 * path must deviate from the task axis to be considered "off" the task axis. The default is 5.
 	 * <p>
-	 * 
+	 *
 	 * NOTE: Execute <code>setData</code> after using this method (so the accuracy measures are
 	 * computed using the new threshold.)
 	 */
@@ -563,7 +563,7 @@ public class AccuracyMeasures
 	 * <i>y</i>-axis distance between consecutive transitions from "moving left" to "moving right",
 	 * or vice versa.
 	 * <p>
-	 * 
+	 *
 	 * NOTE: Execute <code>setData</code> after using this method (so the accuracy measures are
 	 * computed using the new threshold.)
 	 */
@@ -578,7 +578,7 @@ public class AccuracyMeasures
 	 * <i>x</i>-axis distance between consecutive transitions from "moving forward" to
 	 * "moving backward", or vice versa.
 	 * <p>
-	 * 
+	 *
 	 * NOTE: Execute <code>setData</code> after using this method (so the accuracy measures are
 	 * computed using the new threshold.)
 	 */
@@ -597,7 +597,7 @@ public class AccuracyMeasures
 	 * <code>x = Math.hypot(from.x - to.x, from.y - to.y)</code>). Note that the first and last
 	 * points of the transformed path array will only be (0.0, 0.0) and (<i>x</i>, 0.0) if the path
 	 * for this trial started at <code>from</code> and finished at <code>to</code>.
-	 * 
+	 *
 	 */
 	public Point2D.Double[] getTransformedPath()
 	{
@@ -607,7 +607,7 @@ public class AccuracyMeasures
 	/**
 	 * Returns the number target re-entries.
 	 * <p>
-	 * 
+	 *
 	 * A target re-entry is logged each time the path enters the target after the first entry. To
 	 * implement this, a string pattern is created representing the state of the path for each
 	 * sample point: "0" = outside the target, "1" = inside the target. Then, the pattern is
@@ -622,7 +622,7 @@ public class AccuracyMeasures
 	/**
 	 * Returns the number of task axis crossings.
 	 * <p>
-	 * 
+	 *
 	 * A task axis crossing is logged each time the path transitions from "above" the task axis to
 	 * "below" the task axis. A threshold is used to prevent artificially inflating TAC for
 	 * reasonably direct movements that oscillate about the task axis. The default threshold is 5. A
@@ -631,7 +631,7 @@ public class AccuracyMeasures
 	 * transition. Transition detection includes hysteresis (i.e., the last state is maintained
 	 * until the opposite threshold is crossed).
 	 * <p>
-	 * 
+	 *
 	 * See also <code>setThresholdTAC</code>.
 	 */
 	public int getTAC()
@@ -642,7 +642,7 @@ public class AccuracyMeasures
 	/**
 	 * Returns the number of movement direction changes.
 	 * <p>
-	 * 
+	 *
 	 * A movement direction change is logged when the cursor path transitions from "moving left" to
 	 * "moving right", or vice versa. To implement this, the movement direction for each pair of
 	 * points in the path is coded using "1" if the path is moving left or "0" if the path moving
@@ -654,7 +654,7 @@ public class AccuracyMeasures
 	 * threshold is 10. For the example, MDC = 2 (provided the threshold requirement is met for both
 	 * transitions).
 	 * <p>
-	 * 
+	 *
 	 * See also <code>setThresholdMDC</code>.
 	 */
 	public int getMDC()
@@ -665,7 +665,7 @@ public class AccuracyMeasures
 	/**
 	 * Returns the number of orthogonal direction changes.
 	 * <p>
-	 * 
+	 *
 	 * An orthogonal direction change is logged when the cursor path transitions from
 	 * "moving forward" to "moving backward", or vice versa. To implement this, the movement
 	 * direction for each pair of points in the path is coded using "1" if the path is moving
@@ -677,7 +677,7 @@ public class AccuracyMeasures
 	 * the <i>x</i> coordinates exceeds a threshold, an ODC is logged. The default threshold is 10.
 	 * For the example, ODC = 2 (provided the threshold requirement is met for both transitions).
 	 * <p>
-	 * 
+	 *
 	 * See also <code>setThresholdODC</code>.
 	 */
 	public int getODC()

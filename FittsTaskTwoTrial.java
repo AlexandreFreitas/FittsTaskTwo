@@ -24,7 +24,7 @@ class FittsTaskTwoTrial
 	public long mt; // movement time (Note: mt = pt + st)
 	private int err; // error
 	private long[] t; // timestamps
-	
+
 	AccuracyMeasures am;
 
 	FittsTaskTwoTrial(int aArg, int wArg)
@@ -106,10 +106,10 @@ class FittsTaskTwoTrial
 		Point2D.Double[] p = new Point2D.Double[n];
 		for (int i = 0; i < p.length; ++i)
 			p[i] = pArg[i];
-		
+
 		am = new AccuracyMeasures(new Point2D.Double(xFrom, yFrom), new Point2D.Double(xTo, yTo), width, p);
 	}
-	
+
 	// get methods for positioning time and selection time (NOTE: MT = PT + ST)
 	public long getPT()
 	{

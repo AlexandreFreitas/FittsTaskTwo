@@ -69,7 +69,7 @@ class FittsTaskTwoSequence
 	{
 		sequenceRepeatCount = 0;
 	}
-	
+
 	public void incrementSequenceRepeatCount()
 	{
 		++sequenceRepeatCount;
@@ -92,7 +92,7 @@ class FittsTaskTwoSequence
 
 	public double getIDe() // effective index of difficulty (bits)
 	{
-		return tp.getIDe(); 
+		return tp.getIDe();
 	}
 
 	public double getTP() // throughput (bits/s)
