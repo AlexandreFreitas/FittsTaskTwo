@@ -7,6 +7,7 @@ import java.util.Random;
 class FittsTaskTwoBlock
 {
 	private FittsTaskTwoSequence[] sequence;
+	private FittsTaskTwoSequence[] sequenceDown;
 	private int numberOfSequences;
 	private int numberOfTrials;
 	private int[] a;
@@ -60,17 +61,24 @@ class FittsTaskTwoBlock
 	private void initSequences()
 	{
 		sequence = new FittsTaskTwoSequence[numberOfSequences];
+		sequenceDown = new FittsTaskTwoSequence[numberOfSequences];
 		for (int i = 0; i < numberOfSequences; ++i)
 		{
 			int idxA = sequenceOrder[i] / w.length;
 			int idxW = sequenceOrder[i] % w.length;
 			sequence[i] = new FittsTaskTwoSequence(numberOfTrials, a[idxA], w[idxW]);
+			sequenceDown[i] = new FittsTaskTwoSequence(numberOfTrials, a[idxA], w[idxW]);
 		}
 	}
 
 	public FittsTaskTwoSequence getSequence(int i)
 	{
 		return sequence[i];
+	}
+
+	public FittsTaskTwoSequence getSequenceDown(int i)
+	{
+		return sequenceDown[i];
 	}
 
 	public void nextSequence()
@@ -126,6 +134,11 @@ class FittsTaskTwoBlock
 		// ++order;
 		// return order + "," + fb[i].getSequenceData();
 		return sequence[i].getSequenceData();
+	}
+
+	public String getSequenceDataDown(int i)
+	{
+		return sequenceDown[i].getSequenceData();
 	}
 
 	public double getMT()
@@ -209,7 +222,7 @@ class FittsTaskTwoBlock
 
 	/**
 	 * Calculate the mean of the values in an array.
-	 * 
+	 *
 	 * @param n
 	 *            a double array
 	 * @param length
@@ -226,7 +239,7 @@ class FittsTaskTwoBlock
 
 	/**
 	 * Calculate the standard deviation of values in an array.
-	 * 
+	 *
 	 * @param n
 	 *            a double array
 	 * @param length
@@ -245,13 +258,13 @@ class FittsTaskTwoBlock
 
 	/**
 	 * Compute the slope of a regression line.
-	 * 
+	 *
 	 * Regression line coefficients are computed using the least squares method. Typically, the
 	 * <code>x</code> values are controlled (independent) and the <code>y</code> values are measured
 	 * (dependent). In computing the regression line, the <code>y</code> values are 'regressed on'
 	 * the <code>x</code> values. The regression line equation predicts <code>y</code> as a linear
 	 * function of <code>x</code>.
-	 * 
+	 *
 	 * @param x
 	 *            a double array
 	 * @param y
@@ -280,14 +293,14 @@ class FittsTaskTwoBlock
 
 	/**
 	 * Compute the intercept of a regression line.
-	 * 
+	 *
 	 * Regression line coefficients are computed using the least squares method. Typically, the
 	 * <code>x</code> values are controlled (independent) and the <code>y</code> values are measured
 	 * (dependent). In computing the regression line, the <code>y</code> values are 'regressed on'
 	 * the <code>x</code> values. The regression line equation predicts <code>y</code> as a linear
 	 * function of <code>x</code>.
 	 * <p>
-	 * 
+	 *
 	 * @param x
 	 *            a double array
 	 * @param y
@@ -301,10 +314,10 @@ class FittsTaskTwoBlock
 
 	/**
 	 * Calculate the correlation between two sets of values.
-	 * 
+	 *
 	 * This method computes the Pearson coefficient of correlation. It is the statistical summary of
 	 * the degree and direction of relationship of association between two variables.
-	 * 
+	 *
 	 * @param d1
 	 *            an array of doubles
 	 * @param d2
@@ -331,13 +344,13 @@ class FittsTaskTwoBlock
 
 	/**
 	 * Calculate the covariance between two sets of values.
-	 * 
+	 *
 	 * The covariance is a measure of association in many problems in physical sciences and
 	 * engineering. It is an adequate measure as long as the scales (means and variances) of the
 	 * variables are not arbitrary. But, most variables in social and behavioural sciences are
 	 * measured on an arbitrary scale; hence, correlation coefficients are generally preferred to
 	 * covariance as measures of relationship.
-	 * 
+	 *
 	 * @param d1
 	 *            an array of doubles
 	 * @param d2

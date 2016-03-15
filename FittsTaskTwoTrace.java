@@ -193,7 +193,7 @@ class FittsTaskTwoTraceFrame extends JFrame implements ActionListener, KeyListen
 		// ----------------------------------
 
 		fc = new JFileChooser(new File("."));
-		final String[] EXTENSIONS = { ".sd3" };
+		final String[] EXTENSIONS = { "-sd3.csv" };
 		fc.addChoosableFileFilter(new MyFileFilter(EXTENSIONS));
 
 		File sd3FileToOpen = null;

@@ -653,6 +653,8 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 	private BufferedWriter bw1; // writer for sd1 file
 	private BufferedWriter bw2; // writer for sd2 file
 	private BufferedWriter bw3; // writer for sd3 file
+	private BufferedWriter bw1d; // writer for sd1d file
+	private BufferedWriter bw2d; // writer for sd1d file
 	private int trial;
 	private long mt;
 	private long buttonDown; // button down time
@@ -728,8 +730,8 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 		JLabel warning = new JLabel("Output data file exists. Overwrite?");
 		warning.setFont(new Font("sansserif", Font.PLAIN, 16));
 		final Object[] OPTIONS = { "No", "Yes" };
-		if ((new File(fileName + ".sd1")).exists() || new File(fileName + ".sd2").exists()
-				|| new File(fileName + ".sd3").exists())
+		if ((new File(fileName + "-sd1.csv")).exists() || new File(fileName + "-sd2.csv").exists()
+				|| new File(fileName + "-sd3.csv").exists())
 		{
 			if (JOptionPane.showOptionDialog(this, warning, "Caution", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, OPTIONS, OPTIONS[0]) == 0)
@@ -740,9 +742,11 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 
 		try
 		{
-			bw1 = new BufferedWriter(new FileWriter(fileName + ".sd1"));
-			bw2 = new BufferedWriter(new FileWriter(fileName + ".sd2"));
-			bw3 = new BufferedWriter(new FileWriter(fileName + ".sd3"));
+			bw1 = new BufferedWriter(new FileWriter(fileName + "-sd1.csv"));
+			bw1d = new BufferedWriter(new FileWriter(fileName + "-dd1.csv"));
+			bw2 = new BufferedWriter(new FileWriter(fileName + "-sd2.csv"));
+			bw2d = new BufferedWriter(new FileWriter(fileName + "-dd2.csv"));
+			bw3 = new BufferedWriter(new FileWriter(fileName + "-sd3.csv"));
 		} catch (IOException e)
 		{
 			showError("I/O error opening data file");
@@ -756,11 +760,15 @@ class FittsTaskTwoFrame extends JFrame implements MouseMotionListener, MouseList
 			String s = "App,Participant,Condition,Block,Trial," + FittsTaskTwoTrial.getTrialHeader() + "\n";
 			bw1.write(s, 0, s.length());
 			bw1.flush();
+			bw1d.write(s, 0, s.length());
+			bw1d.flush();
 
 			// sd2 header
 			s = "App,Participant,Condition,Block," + FittsTaskTwoBlock.getBlockHeader() + "\n";
 			bw2.write(s, 0, s.length());
 			bw2.flush();
+			bw2d.write(s, 0, s.length());
+			bw2d.flush();
 
 			// sd3 header
 			s = "TRACE DATA\n";
