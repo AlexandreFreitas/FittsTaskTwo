@@ -1,12 +1,13 @@
 all:
-	mkdir -p ./build
+	mkdir -p ./build/META-INF
 	javac -d ./build FittsTaskTwo.java FittsTaskTwoBlock.java FittsTaskTwoConfiguration.java FittsTaskTwoSequence.java FittsTaskTwoSetup.java FittsTaskTwoTrial.java Throughput.java
 	cp FittsTaskTwo.cfg ./build/
+	cp MANIFEST.MF ./build/META-INF/
 	cp *.class ./build/
-	cd ./build; jar cvf FittsTaskTwo.jar *.class *.cfg
+	cd ./build; jar cvmf META-INF/MANIFEST.MF FittsTaskTwo.jar *.class *.cfg
 
 run: all
-	cd build; java FittsTaskTwo
+	cd build; java -jar FittsTaskTwo.jar
 
 clean:
 	rm -r build
